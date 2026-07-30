@@ -1,0 +1,45 @@
+import csv
+
+# Load dataset
+with open(r"C:\Users\Pooja\OneDrive\文档\workload_data.csv", "r") as file:
+    reader = csv.reader(file)
+
+    # Read header
+    header = next(reader)
+
+    # Store data
+    data = list(reader)
+
+# Initialize the most specific hypothesis
+hypothesis = ["Ø"] * (len(header) - 1)
+
+print("Initial Hypothesis:")
+print(hypothesis)
+print()
+
+# Process each training example
+for i, row in enumerate(data, start=1):
+
+    attributes = row[:-1]
+    target = row[-1]
+
+    print(f"Processing W{i}: {attributes} -> {target}")
+
+    # Consider only positive examples
+    if target == "Yes":
+
+        # First positive example
+        if hypothesis == ["Ø"] * len(attributes):
+            hypothesis = attributes.copy()
+
+        else:
+            # Generalize hypothesis
+            for j in range(len(attributes)):
+                if hypothesis[j] != attributes[j]:
+                    hypothesis[j] = "?"
+
+    print("Current Hypothesis:", hypothesis)
+    print("-" * 50)
+
+print("\nFinal Specific Hypothesis:")
+print(hypothesis)
